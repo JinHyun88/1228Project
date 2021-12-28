@@ -18,6 +18,10 @@ interface TodoDao {
     fun getAllData() : Flow<List<Todo>>
 
     @Query("SELECT * FROM Todo WHERE year = :year AND month = :month AND day = :day ORDER BY id DESC")
-    fun getDateData(year : Int, month : Int, day : Int) : Flow<List<Todo>>
+    fun getDateData(year : Int, month : Int, day : Int) : List<Todo>
+
+    @Query("SELECT * FROM Todo WHERE `check` = 1 ORDER BY year DESC, month DESC, day DESC, id DESC")
+    fun getDoneData() : Flow<List<Todo>>
+
 
 }

@@ -6,13 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.a1228project.R
 import com.example.a1228project.database.Todo
 import com.example.a1228project.databinding.TodoItemBinding
+import com.example.a1228project.dialog.UpdateDialog
+import com.example.a1228project.dialog.UpdateDialogInterface
 import com.example.a1228project.viewmodel.MainViewModel
 
 class TodoAdapter(private val todoViewModel: MainViewModel) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
     private var todoList = emptyList<Todo>()
 
-    class TodoViewHolder(private val binding: TodoItemBinding) : RecyclerView.ViewHolder(binding.root){
+    class TodoViewHolder(private val binding: TodoItemBinding) : RecyclerView.ViewHolder(binding.root),
+        UpdateDialogInterface {
+
+        lateinit var todo : Todo
+        lateinit var todoViewModel: MainViewModel
         fun bind(currentTodo : Todo, memoViewModel: MainViewModel){
             binding.todo = currentTodo
 
@@ -31,10 +37,20 @@ class TodoAdapter(private val todoViewModel: MainViewModel) : RecyclerView.Adapt
                 }
             }
 
-            // 삭제 버튼 클릭 시 메모 삭제
             binding.deleteButton.setOnClickListener {
                 memoViewModel.deleteTodo(currentTodo)
             }
+
+            binding.updateButton.setOnClickListener {
+                todo = currentTodo
+                val myCustomDialog = UpdateDialog(binding.updateButton.context,this)
+                myCustomDialog.show()
+            }
+        }
+
+        override fun onOkButtonClicked(content: String) {
+            val updateTodo = Todo(todo.id,todo.check,content,todo.year,todo.month,todo.day)
+            todoViewModel.updateTodo(updateTodo)
         }
     }
 

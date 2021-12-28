@@ -1,6 +1,7 @@
 package com.example.a1228project.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,7 @@ class CalFragment : Fragment(), MyCustomDialogInterface {
         binding!!.calendarRecyclerview.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
         binding!!.calendarRecyclerview.adapter = adapter
 
-        binding!!.calendarView.setOnDateChangeListener { calendarView, year, month, day ->
+        binding!!.calendarView.setOnDateChangeListener { _, year, month, day ->
             // 날짜 선택시 그 날의 정보 할당
             this.year = year
             this.month = month+1
@@ -46,11 +47,20 @@ class CalFragment : Fragment(), MyCustomDialogInterface {
 
             binding!!.calendarDateText.text = "${this.year}/${this.month}/${this.day}"
 
-            // 리스트 관찰하여 변경시 어댑터에 전달해줌
-            todoViewModel.getDateData(this.year,this.month,this.day).observe(viewLifecycleOwner, Observer {
-                adapter.setData(it)
-            })
+            // 해당 날짜 데이터를 불러옴 (currentData 변경)
+            todoViewModel.getDateData(this.year,this.month,this.day)
         }
+
+        // 메모 데이터가 수정되었을 경우 날짜 데이터를 불러옴 (currentData 변경)
+        todoViewModel.getAllData.observe(viewLifecycleOwner, {
+            todoViewModel.getDateData(year, month, day)
+        })
+
+        // 현재 날짜 데이터 리스트(currentData) 관찰하여 변경시 어댑터에 전달해줌
+        todoViewModel.currentData.observe(viewLifecycleOwner, Observer {
+            adapter.setData(it)
+            Log.d("test", "onCreateView")
+        })
 
         // Fab 클릭시 다이얼로그 띄움
         binding!!.calendarDialogButton.setOnClickListener {

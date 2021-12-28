@@ -1,10 +1,7 @@
 package com.example.a1228project.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.a1228project.database.Todo
 import com.example.a1228project.database.TodoDatabase
 import com.example.a1228project.repo.TodoRepository
@@ -13,12 +10,18 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application){
     val getAllData : LiveData<List<Todo>>
+    val getDoneData : LiveData<List<Todo>>
     private val repository : TodoRepository
+
+    private var _currentData = MutableLiveData<List<Todo>>()
+    val currentData : LiveData<List<Todo>>
+        get() = _currentData
 
     init{
         val todoDao = TodoDatabase.getDatabase(application)!!.todoDao()
         repository = TodoRepository(todoDao)
         getAllData = repository.getAllData.asLiveData()
+        getDoneData = repository.getDoneData.asLiveData()
     }
 
     fun addTodo(todo: Todo){
@@ -39,7 +42,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application){
         }
     }
 
-    fun getDateData(year : Int, month : Int, day : Int): LiveData<List<Todo>> {
-        return repository.getDateData(year, month, day).asLiveData()
+    fun getDateData(year : Int, month : Int, day : Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val tmp = repository.getDateData(year, month, day)
+            _currentData.postValue(tmp!!)
+        }
     }
 }
