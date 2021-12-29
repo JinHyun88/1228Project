@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.example.a1228project.R
 
@@ -23,9 +24,12 @@ class UpdateDialog(context : Context, updateDialogInterface : UpdateDialogInterf
         var okButton : Button = findViewById(R.id.okButton)
         var cancelButton : Button = findViewById(R.id.cancelButton)
         var memoEditView : EditText = findViewById(R.id.todoEditView)
+        var dialogName : TextView = findViewById(R.id.dialogName)
 
         // 배경 투명하게 바꿔줌
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialogName.text = "해야할 일 수정"
 
         okButton.setOnClickListener {
             val content = memoEditView.text.toString()

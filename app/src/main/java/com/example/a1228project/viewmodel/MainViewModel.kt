@@ -1,6 +1,7 @@
 package com.example.a1228project.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.a1228project.database.Todo
 import com.example.a1228project.database.TodoDatabase
@@ -40,6 +41,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application){
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteTodo(todo)
         }
+    }
+
+    fun showToast(text: String){
+        Toast.makeText(getApplication(), "$text", Toast.LENGTH_SHORT)
     }
 
     fun getDateData(year : Int, month : Int, day : Int) {

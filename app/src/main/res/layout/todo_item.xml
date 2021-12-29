@@ -8,7 +8,6 @@
         <variable
             name="todo"
             type="com.example.a1228project.database.Todo" />
-        
     </data>
     
     <LinearLayout
@@ -29,7 +28,7 @@
                 android:checked="@{todo.check}"
                 android:text="@{todo.content}"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/updateButton"
+                app:layout_constraintEnd_toStartOf="@+id/dDayButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +49,16 @@
                 android:text="Button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/dDayButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_calendar_today"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/updateButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
