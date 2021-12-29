@@ -52,20 +52,6 @@ class TodoAdapter(private val todoViewModel: MainViewModel) : RecyclerView.Adapt
                 myCustomDialog.show()
             }
 
-            binding.dDayButton.setOnClickListener {
-                val instance = Calendar.getInstance()
-                val today = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.time.time
-                val dateFormat = SimpleDateFormat("yyyyMMdd")
-                val currentYear = instance.get(Calendar.YEAR).toString()
-                val endDate = dateFormat.parse("${currentYear}1231").time
-                var dDay = (endDate - today) / (24 * 60 * 60 * 1000)
-                todoViewModel.showToast("D-$dDay")
-            }
         }
 
         override fun onOkButtonClicked(content: String) {

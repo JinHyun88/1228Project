@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">새해 투두</string>
+    <string name="app_name">심플 투두</string>
     <string name="date_format">%d/%d/%d</string>
 
     <!-- TODO: Remove or change this placeholder text -->
